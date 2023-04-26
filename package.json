@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "connect-session-sequelize": "^7.0.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.18.2",
+    "express-handlebars": "^5.2.0",
+    "express-session": "^1.17.1",
+    "handlebars": "^4.7.6",
+    "mysql2": "^3.2.4",
+    "sequelize": "^6.31.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "the_tech_blog",
+  "description": "Writing about tech can be just as important as making it. Developers spend plenty of time creating new applications and debugging existing codebases, but most developers also spend at least some of their time reading and writing about technical concepts, recent advancements, and new technologies. A simple Google search for any concept covered in this course returns thousands of think pieces and tutorials from developers of all skill levels!",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjlynch123/The_Tech_Blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjlynch123/The_Tech_Blog/issues"
+  },
+  "homepage": "https://github.com/mjlynch123/The_Tech_Blog#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
