@@ -72,6 +72,7 @@ router.get("/login", (req, res) => {
     res.redirect("/");
     return;
   }
+  // ! This is making sure that the login button is changed to logout if the user is logged in
   res.render("login", { loggedIn: req.session.loggedIn });
 });
 
@@ -84,5 +85,10 @@ router.post('/logout', (req, res) => {
       res.status(404).end();
     }
 });
+
+router.get("/newPost", async (req, res) => {
+    // ! This is making sure that the login button is changed to logout if the user is logged in
+    res.render('new_post', {loggedIn: req.session.loggedIn});
+})
 
 module.exports = router;

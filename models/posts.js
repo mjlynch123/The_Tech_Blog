@@ -46,20 +46,21 @@ Post.init(
   }
 );
 
+// ! had to put seed data inside of models, otherwise I was getting an unfixable bug denying access
 const posts = [
   {
-    title: 'First post',
-    body: 'This is my first post!',
+    title: 'How to add two numbers',
+    body: 'The way that you add two numbers is that you take one number and add it to the other one',
     user_id: 1,
   },
   {
-    title: 'Second post',
-    body: 'This is my second post!',
+    title: 'Why is code so difficult',
+    body: 'Nobody actually knows!',
     user_id: 1,
   },
   {
-    title: 'Third post',
-    body: 'This is my third post!',
+    title: 'How does ChatGPT work?',
+    body: 'Magic!',
     user_id: 1,
   },
 ];

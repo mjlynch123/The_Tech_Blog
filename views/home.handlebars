@@ -12,6 +12,11 @@
   {{!-- This will only display the home page correctly if the user is logged in --}}
   {{#if loggedIn}}
     <h1>Hello</h1>
+
+    <form method="get" action="/newPost" id="newPost">
+      <button id="postBtn">+ New Post</button>
+    </form>
+
   {{else}}
     <h1>Please Log in</h1>
   {{/if}}
