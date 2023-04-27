@@ -1,7 +1,11 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
 class Post extends Model {}
+
+const sequelize = new Sequelize('blog_db', 'root', 'Password1', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
 
 Post.init(
   {
@@ -41,5 +45,37 @@ Post.init(
     modelName: 'post',
   }
 );
+
+const posts = [
+  {
+    title: 'First post',
+    body: 'This is my first post!',
+    user_id: 1,
+  },
+  {
+    title: 'Second post',
+    body: 'This is my second post!',
+    user_id: 1,
+  },
+  {
+    title: 'Third post',
+    body: 'This is my third post!',
+    user_id: 1,
+  },
+];
+
+const seedPost = async () => {
+  try {
+    await sequelize.sync({ force: true });
+    await Post.bulkCreate(posts);
+    console.log('Data seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding data:', error);
+  } finally {
+    sequelize.close();
+  }
+};
+
+seedPost();
 
 module.exports = Post;

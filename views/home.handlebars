@@ -5,10 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Tech Blog</title>
-  <link rel="stylesheet" type="text/css" href="/css/jass.css">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  {{!-- <link rel="stylesheet" type="text/css" href="../public/css/jass.css"> --}}
+  <link rel="stylesheet" type="text/css" href="../public/css/main.css">
 </head>
 <body>
+  {{!-- This will only display the home page correctly if the user is logged in --}}
+  {{#if loggedIn}}
     <h1>Hello</h1>
+  {{else}}
+    <h1>Please Log in</h1>
+  {{/if}}
 </body>
 </html>
