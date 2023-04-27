@@ -69,6 +69,11 @@ const posts = [
     body: 'I have no idea!',
     user_id: 2,
   },
+  {
+    title: 'This is a test?',
+    body: 'This is a test to make sure that the new post button will stay fixed the bottom of the page!',
+    user_id: 2,
+  },
 ];
 
 const seedPost = async () => {

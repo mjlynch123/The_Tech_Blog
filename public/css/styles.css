@@ -26,9 +26,16 @@ nav form {
     margin-top: 12px;
 }
 
+.cards {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .blog_card {
     border: 2px solid;
     margin: 10px;
+    width: 1000px;
 }
 
 .blog_card h2 {
