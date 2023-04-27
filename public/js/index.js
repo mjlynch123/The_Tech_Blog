@@ -1,21 +1,21 @@
-const loginForm = document.querySelector('#login');
+const loginForm = document.querySelector("#login");
 
-loginForm.addEventListener('submit', async (event) => {
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const email = document.querySelector('#email').value;
-  const password = document.querySelector('#password').value;
+  const email = document.querySelector("#email").value;
+  const password = document.querySelector("#password").value;
 
-  const response = await fetch('/login', {
-    method: 'POST',
+  const response = await fetch("/login", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 
   if (response.ok) {
-    document.location.href = '/';
+    document.location.href = "/";
   } else {
     const error = await response.json();
     alert(error.message);
@@ -23,16 +23,25 @@ loginForm.addEventListener('submit', async (event) => {
 });
 
 const logout = async () => {
-    const response = await fetch('/logout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-  
-    if (response.ok) {
-      document.location.replace('/');
-    } else {
-      alert('Failed to log out.');
-    }
-  };
-  
-  document.querySelector('#logout').addEventListener('submit', logout);
+  const response = await fetch("/logout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.ok) {
+    document.location.replace("/");
+  } else {
+    alert("Failed to log out.");
+  }
+};
+
+async function getPosts() {
+  fetch('/')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => console.log(error));
+}
+
+document.querySelector("#logout").addEventListener("submit", logout);

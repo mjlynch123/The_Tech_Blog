@@ -46,7 +46,7 @@ Post.init(
   }
 );
 
-// ! had to put seed data inside of models, otherwise I was getting an unfixable bug denying access
+// ! had to put seed data inside of models, otherwise I was getting an error saying that the tables couldn't be created
 const posts = [
   {
     title: 'How to add two numbers',
@@ -56,12 +56,17 @@ const posts = [
   {
     title: 'Why is code so difficult',
     body: 'Nobody actually knows!',
-    user_id: 1,
+    user_id: 2,
   },
   {
     title: 'How does ChatGPT work?',
     body: 'Magic!',
     user_id: 1,
+  },
+  {
+    title: 'How do I code?',
+    body: 'I have no idea!',
+    user_id: 2,
   },
 ];
 
@@ -72,8 +77,6 @@ const seedPost = async () => {
     console.log('Data seeded successfully!');
   } catch (error) {
     console.error('Error seeding data:', error);
-  } finally {
-    sequelize.close();
   }
 };
 

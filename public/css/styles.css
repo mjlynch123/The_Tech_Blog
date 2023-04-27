@@ -1,0 +1,74 @@
+body {
+  width: 100vw;
+  overflow-y: scroll;
+}
+
+header {
+    background-color: grey;
+    display: flex;
+    height: 250px;
+  }
+
+header h1 {
+    margin-inline-start: 5px;
+}
+
+nav {
+  position: absolute;
+  right: 5px;
+}
+
+button {
+    padding: 5px;
+}
+
+nav form {
+    margin-top: 12px;
+}
+
+.blog_card {
+    border: 2px solid;
+    margin: 10px;
+}
+
+.blog_card h2 {
+    border-bottom: 1px solid;
+    padding-left: 10px;
+}
+
+.blog_card p {
+    padding-left: 10px;
+}
+
+#login {
+  width: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#textpost {
+  resize: none;
+  width: 100%;
+}
+
+#post-Title {
+  width: 100%;
+  height: 45px;
+  font-size: 25px;
+}
+
+#postBtn {
+  width: 100%;
+  height: 60px;
+}
+
+#newPostBtn {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px;
+  width: 150px;
+}

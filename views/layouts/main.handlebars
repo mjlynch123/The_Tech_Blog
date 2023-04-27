@@ -4,31 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Tech Blog</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="/css/jass.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/jass.css" />
+
   </head>
 
   <body>
     <header>
       <h1>Welcome to our blog</h1>
-    </header>
-    
-    <nav>
-      <form action="/" method="GET">
-        <button>Home</button>
-      </form>
-
-      {{#if loggedIn}}
-        <form action="/logout" method="POST">
-          <button type="submit" id="logout">Logout</a>
+      <nav id="nav">
+        <form action="/" method="GET">
+          <button>Home</button>
         </form>
-      {{else}}
-      <form action="/login" method="GET">
-        <button id="">Login</button>
-      </form>
-      {{/if}}
+        {{#if loggedIn}}
+          <form action="/logout" method="POST">
+            <button type="submit" id="logout">Logout</button>
+          </form>
+        {{else}}
+          <form action="/login" method="GET">
+            <button id="">Login</button>
+          </form>
+        {{/if}}
+      </nav>
+    </header>
 
-    </nav>
     <main>
       <div class="gallery">
         {{{body}}}
@@ -37,8 +36,8 @@
     </main>
 
     {{#if loggedIn}}
-  <script src="/js/index.js"></script>
-  {{/if}}
+      <script src="/js/index.js"></script>
+    {{/if}}
     <script src="/js/index.js"></script>
   </body>
 
