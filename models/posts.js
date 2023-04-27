@@ -47,6 +47,7 @@ Post.init(
 );
 
 // ! had to put seed data inside of models, otherwise I was getting an error saying that the tables couldn't be created
+// ! This will seed on start
 const posts = [
   {
     title: 'How to add two numbers',
