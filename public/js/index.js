@@ -44,4 +44,36 @@ async function getPosts() {
   .catch(error => console.log(error));
 }
 
+// Attach an event listener to the form's submit button
+document.querySelector("#postBtn").addEventListener("click", async (event) => {
+  event.preventDefault(); // Prevent the form from submitting normally
+
+  try {
+    // Extract the post data from the form fields
+    const title = document.querySelector("#post-Title").value;
+    const content = document.querySelector("#textpost").value;
+
+    // Send a POST request to the server to save the new post
+    const response = await fetch("/newPost", {
+      method: "POST",
+      body: JSON.stringify({ title, content }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Redirect the user to the homepage if the post was successfully saved
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      console.error(response.statusText);
+      alert("Failed to save post");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save post");
+  }
+});
+
+
 document.querySelector("#logout").addEventListener("submit", logout);

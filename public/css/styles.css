@@ -1,6 +1,7 @@
 body {
   width: 100vw;
   overflow-y: scroll;
+  margin: 0;
 }
 
 header {
@@ -26,10 +27,21 @@ nav form {
     margin-top: 12px;
 }
 
-.cards {
+.cards, .card {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.card {
+    border: 2px solid;
+    width:1000px;
+    margin: 10px;
+    margin: 10px;
+}
+
+.card p {
+    font-size: 18px;
 }
 
 .blog_card {
@@ -38,12 +50,12 @@ nav form {
     width: 1000px;
 }
 
-.blog_card h2 {
+.blog_card h2, .card h1 {
     border-bottom: 1px solid;
     padding-left: 10px;
 }
 
-.blog_card p {
+.blog_card p, .card p {
     padding-left: 10px;
 }
 
@@ -78,4 +90,8 @@ nav form {
   transform: translate(-50%, -50%);
   padding: 15px;
   width: 150px;
+}
+
+#nav {
+    display: flex;
 }

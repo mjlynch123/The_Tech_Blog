@@ -1,31 +1,31 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Tech Blog</title>
-</head>
-<body>
-  {{!-- This will only display the home page correctly if the user is logged in --}}
-  {{#if loggedIn}}
-    {{!-- Loop through all posts and display each post's data --}}
-    <div class="cards">
-      {{#each postList}}
-        <div class="blog_card">
-          <h2>{{this.title}}</h2>
-          <p>Created By: {{this.user}}</p>
-          <p>{{this.body}}</p>
-        </div>
-      {{/each}}
-    </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Tech Blog</title>
+  </head>
+  <body>
+    {{! This will only display the home page correctly if the user is logged in }}
+    {{#if loggedIn}}
+      {{! Loop through all posts and display each post's data }}
+      <div class="cards">
+        {{#each postList}}
+          <div class="blog_card">
+            <h2><a href="/post/{{this.postId}}">{{this.title}}</a></h2>
+            <p>Created By: {{this.user}}</p>
+            <p>{{this.time}}</p>
+            <p>{{this.body}}</p>
+          </div>
+        {{/each}}
+      </div>
 
-    <form method="get" action="/newPost" id="newPost">
-      <button id="newPostBtn">+ New Post</button>
-    </form>
+      <form method="get" action="/newPost" id="newPost">
+        <button id="newPostBtn">+ New Post</button>
+      </form>
 
-  {{else}}
-    <h1>Please Log in</h1>
-  {{/if}}
-</body>
+    {{else}}
+      <h1>Please Log in</h1>
+    {{/if}}
+  </body>
 </html>
