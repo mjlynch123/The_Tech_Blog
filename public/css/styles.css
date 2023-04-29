@@ -4,59 +4,87 @@ body {
   margin: 0;
 }
 
+/* Nav and Header Styling */
+
 header {
-    background-color: grey;
-    display: flex;
-    height: 250px;
-  }
+  background-color: grey;
+  display: flex;
+  height: 250px;
+}
 
 header h1 {
-    margin-inline-start: 5px;
+  margin-inline-start: 5px;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
 }
 
 nav {
   position: absolute;
-  right: 5px;
+  left: 50%;
+  top: 17%;
+  transform: translate(-50%, -50%);
 }
 
 button {
-    padding: 5px;
+  padding: 5px;
 }
 
 nav form {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 
-.cards, .card {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+/* Base card styling */
+
+.cards,
+.card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .card {
-    border: 2px solid;
-    width:1000px;
-    margin: 10px;
-    margin: 10px;
+  border: 2px solid;
+  width: 1000px;
+  margin: 10px;
+  margin: 10px;
 }
 
 .card p {
-    font-size: 18px;
+  font-size: 18px;
 }
+
+.cards a {
+  color: black;
+}
+
+.cards a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+/* Blog Card */
 
 .blog_card {
-    border: 2px solid;
-    margin: 10px;
-    width: 1000px;
+  border: 2px solid;
+  margin: 10px;
+  width: 1000px;
 }
 
-.blog_card h2, .card h1 {
-    border-bottom: 1px solid;
-    padding-left: 10px;
+.blog_card:hover {
+  cursor: pointer;
 }
 
-.blog_card p, .card p {
-    padding-left: 10px;
+.blog_card h2,
+.card h1 {
+  border-bottom: 1px solid;
+  padding-left: 10px;
+}
+
+.blog_card p,
+.card p {
+  padding-left: 10px;
 }
 
 #login {
@@ -90,8 +118,38 @@ nav form {
   transform: translate(-50%, -50%);
   padding: 15px;
   width: 150px;
+  height: 55px;
+  border-radius: 10px;
+  border: 3px solid;
 }
 
-#nav {
-    display: flex;
+.update-form {
+    border: 1px solid;
+    position: absolute;
+    top: 28.3%;
+    height: 350px;
+    width: 450px;
+}
+
+.input {
+    margin: 10px;
+}
+
+.update {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    width: 175px;
+    height: 45px;
+}
+
+input {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    height: 175px;
 }

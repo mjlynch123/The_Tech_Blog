@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { Post, User } = require("../models");
 
+let globalUserId;
+
 // ! All routes had to be added to this page due to same bug causing access denial
 
 router.get("/", async (req, res) => {
@@ -38,6 +40,61 @@ router.get("/login", async (req, res) => {
 
 router.get("/signup", async (req, res) => {
   res.render("signup");
+});
+
+router.get('/post', async (req, res) => {
+  try {
+    const postId = req.query.id;
+    const post = await Post.findOne({ where: { id: postId } });
+    res.render('post-details', { post });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+router.get('/post/:id', async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id, {
+      include: { model: User, attributes: ['username'] }
+    });
+
+    if (!post) {
+      res.status(404).render('404');
+      return;
+    }
+
+    // * This is where I am grabbing the susername from the post data
+    const username = post.user.dataValues.username;
+
+    const datePosted = post.created_at.toLocaleDateString();
+    const postData = {
+      user: username,
+      time: datePosted,
+      title: post.title,
+      body: post.body,
+    };
+
+    res.render('partials/post-details', { postData, loggedIn: req.session.loggedIn, postId: req.params.id });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/newPost", async (req, res) => {
+  // ! This is making sure that the login button is changed to logout if the user is logged in
+  res.render("new_post", { loggedIn: req.session.loggedIn });
+});
+
+// Login route
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+  // ! This is making sure that the login button is changed to logout if the user is logged in
+  res.render("login", { loggedIn: req.session.loggedIn });
 });
 
 router.post("/signup", async (req, res) => {
@@ -84,23 +141,13 @@ router.post("/login", async (req, res) => {
     req.session.save(() => {
       req.session.loggedIn = true;
       req.session.userId = UserData.id;
-      console.log(req.session.loggedIn);
+      globalUserId = UserData.id;
       res.render("home", { loggedIn: req.session.loggedIn });
     });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
-});
-
-// Login route
-router.get("/login", (req, res) => {
-  if (req.session.loggedIn) {
-    res.redirect("/");
-    return;
-  }
-  // ! This is making sure that the login button is changed to logout if the user is logged in
-  res.render("login", { loggedIn: req.session.loggedIn });
 });
 
 router.post("/logout", (req, res) => {
@@ -111,11 +158,6 @@ router.post("/logout", (req, res) => {
   } else {
     res.status(404).end();
   }
-});
-
-router.get("/newPost", async (req, res) => {
-  // ! This is making sure that the login button is changed to logout if the user is logged in
-  res.render("new_post", { loggedIn: req.session.loggedIn });
 });
 
 router.post("/newPost", async (req, res) => {
@@ -146,40 +188,33 @@ router.post("/newPost", async (req, res) => {
   }
 });
 
-router.get('/post', async (req, res) => {
+router.post('/post/:id', async (req, res) => {
   try {
-    const postId = req.query.id;
-    const post = await Post.findOne({ where: { id: postId } });
-    res.render('post-details', { post });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
-
-router.get('/post/:id', async (req, res) => {
-  try {
-    const post = await Post.findByPk(req.params.id, {
-      include: { model: User, attributes: ['username'] }
-    });
+    const postId = req.params.id;
+    const post = await Post.findByPk(req.params.id);
+    console.log(post);
 
     if (!post) {
       res.status(404).render('404');
       return;
     }
 
-    // * This is where I am grabbing the susername from the post data
-    const username = post.user.dataValues.username;
+    if (post.user_id !== globalUserId) {
+      console.log('Access forbidden:', req.session.userId, post.user_id);
+      res.status(403).render('403');
+      return;
+    }
 
-    const datePosted = post.created_at.toLocaleDateString();
-    const postData = {
-      user: username,
-      time: datePosted,
-      title: post.title,
-      body: post.body,
-    };
+    console.log(globalUserId);
+    console.log(post.user_id);
 
-    res.render('partials/post-details', { postData, loggedIn: req.session.loggedIn });
+    // Update the post's properties
+    post.title = req.body.title;
+    post.body = req.body.body;
+    await post.save();
+
+    // Redirect to the updated post
+    res.redirect(`/post/${postId}`)
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

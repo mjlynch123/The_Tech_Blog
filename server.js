@@ -5,6 +5,8 @@ const exphbs = require("express-handlebars");
 const routes = require("./controllers");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
+const methodOverride = require('method-override');
+
 const sequelize = require("./config/connection");
 const helpers = require('./utils/helpers');
 const Sequelize = require("sequelize");
@@ -29,6 +31,8 @@ const hbs = exphbs.create({ helpers });
 app.use(session(sess));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+
+app.use(methodOverride('_method'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -11,12 +11,14 @@
       {{! Loop through all posts and display each post's data }}
       <div class="cards">
         {{#each postList}}
-          <div class="blog_card">
-            <h2><a href="/post/{{this.postId}}">{{this.title}}</a></h2>
-            <p>Created By: {{this.user}}</p>
-            <p>{{this.time}}</p>
-            <p>{{this.body}}</p>
-          </div>
+          <a href="/post/{{this.postId}}">
+            <div class="blog_card">
+              <h2>{{this.title}}</h2>
+              <p>Created By: {{this.user}}</p>
+              <p>{{this.time}}</p>
+              <p>{{this.body}}</p>
+            </div>
+          </a>
         {{/each}}
       </div>
 

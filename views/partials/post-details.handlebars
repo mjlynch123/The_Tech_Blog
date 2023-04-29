@@ -1,11 +1,31 @@
 <link rel="stylesheet" href="/css/styles.css" />
+<link rel="stylesheet" href="/css/jass.css" />
 <html>
   <body>
     <div class="card">
-        <h1>{{postData.title}}</h1>
-        <p>Created By: {{postData.user}}</p>
-        <p>{{postData.time}}</p>
-        <p>{{postData.body}}</p>
+      <h1>{{postData.title}}</h1>
+      <p>Created By: {{postData.user}}</p>
+      <p>{{postData.time}}</p>
+      <p>{{postData.body}}</p>
     </div>
+
+    <form action="/post/{{postId}}" method="POST" class="update-form">
+      <div class="input">
+        <input type="hidden" name="_method" value="PUT" />
+        <label for="title">Title</label><br />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value="{{postData.title}}"
+        /><br />
+
+        <label for="body">Body:</label><br />
+        <textarea id="body" name="body">{{postData.body}}</textarea><br />
+
+        <button type="submit" class="update">Update Post</button>
+      </div>
+    </form>
+
   </body>
 </html>
