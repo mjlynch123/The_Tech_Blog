@@ -2,16 +2,50 @@
 <link rel="stylesheet" href="/css/jass.css" />
 <html>
   <body>
-    <div class="card">
-      <h1>{{postData.title}}</h1>
-      <p>Created By: {{postData.user}}</p>
-      <p>{{postData.time}}</p>
-      <p>{{postData.body}}</p>
+    <div class="main-area">
+      {{! Main post card }}
+      <div class="card">
+        <h1>{{postData.title}}</h1>
+        <p><strong>{{postData.user}}</strong></p>
+        <p
+          class="datePosted"
+          style="font-size: 13px; margin-top: -18px"
+        >{{postData.time}}</p>
+        <p>{{postData.body}}</p>
+      </div>
+      <div class="comment-zone">
+        {{#if postData.comments.length}}
+          {{#each postData.comments}}
+            <div class="comment-item">
+              <p><strong>{{this.user}}</strong> <span class="created">{{this.created}}</span></p>
+              <p class="text">{{this.text}}</p>
+            </div>
+          {{/each}}
+        {{else}}
+          <p><strong>{{postData.length}}</strong></p>
+          <p>No comments yet.</p>
+        {{/if}}
+      </div>
+
+      {{! Form for adding a comment }}
+      <form
+        action="/post/{{postId}}/comment"
+        method="POST"
+        class="comment-form"
+        onsubmit="return validateCommentForm()"
+      >
+        <label for="comment">Leave a comment:</label><br />
+        <textarea id="comment" name="comment"></textarea><br />
+
+        <button type="submit" class="comment">Comment</button>
+      </form>
     </div>
 
+    {{! Code to update post }}
     <form action="/post/{{postId}}" method="POST" class="update-form">
       <div class="input">
         <input type="hidden" name="_method" value="PUT" />
+        <h1>Update Post</h1>
         <label for="title">Title</label><br />
         <input
           type="text"

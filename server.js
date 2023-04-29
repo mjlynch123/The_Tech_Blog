@@ -6,10 +6,10 @@ const routes = require("./controllers");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const methodOverride = require('method-override');
+const moment = require('moment');
 
 const sequelize = require("./config/connection");
 const helpers = require('./utils/helpers');
-const Sequelize = require("sequelize");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,7 +19,7 @@ const sess = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 86400000, // 1 day
+    maxAge: 1800000, // 30 minutes
   },
   store: new SequelizeStore({
     db: sequelize,

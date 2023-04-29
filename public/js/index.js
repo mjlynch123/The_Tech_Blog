@@ -75,5 +75,13 @@ document.querySelector("#postBtn").addEventListener("click", async (event) => {
   }
 });
 
-
 document.querySelector("#logout").addEventListener("submit", logout);
+
+function validateCommentForm() {
+  var comment = document.getElementById("comment").value;
+  if (comment.trim() == "") {
+    alert("Comment field cannot be empty.");
+    return false;
+  }
+  return true;
+}

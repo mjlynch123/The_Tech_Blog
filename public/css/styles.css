@@ -2,9 +2,10 @@ body {
   width: 100vw;
   overflow-y: scroll;
   margin: 0;
+  height: 1150px;
 }
 
-/* Nav and Header Styling */
+/* ==================== Nav and Header Styling ==================== */
 
 header {
   background-color: grey;
@@ -20,6 +21,10 @@ header h1 {
   transform: translate(-50%, -50%);
 }
 
+main {
+  text-align: center;
+}
+
 nav {
   position: absolute;
   left: 50%;
@@ -27,6 +32,7 @@ nav {
   transform: translate(-50%, -50%);
 }
 
+/* This is the styling for the login/logout and home buttons */
 button {
   padding: 5px;
 }
@@ -35,8 +41,19 @@ nav form {
   margin-top: 12px;
 }
 
-/* Base card styling */
+.main-area {
+  width: 1000px;
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  transform: translateX(-50%);
+  border: 1px solid;
+  min-height: 420px;
+  height: auto;
+  text-align: left;
+}
 
+/* ==================== Base card styling ==================== */
 .cards,
 .card {
   position: absolute;
@@ -47,8 +64,8 @@ nav form {
 .card {
   border: 2px solid;
   width: 1000px;
-  margin: 10px;
-  margin: 10px;
+  background-color: white;
+  z-index: 1;
 }
 
 .card p {
@@ -64,7 +81,64 @@ nav form {
   color: black;
 }
 
-/* Blog Card */
+/* ==================== Comment Styling ==================== */
+
+.comment-zone {
+  height: 200px;
+  position: relative;
+  top: 185px;
+  width: 100%;
+  overflow: auto;
+  padding: 10px;
+  margin-top: -30px;
+}
+
+.comment-item {
+  border-bottom: 1px solid black;
+}
+
+.created {
+  font-size: 12px;
+  margin-inline-start: 5px;
+}
+
+.text {
+  margin-top: -15px;
+}
+
+.comment-form {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+}
+
+.comment-form textarea {
+  min-height: 45px;
+  height: auto;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+}
+
+#comment {
+  position: absolute;
+  width: 90%;
+  left: 0;
+  bottom: -16px;
+}
+
+.comment {
+  width: 10%;
+  position: absolute;
+  right: 0;
+  bottom: -16px;
+  height: 45px;
+}
+
+/* ==================== Blog Card ==================== */
 
 .blog_card {
   border: 2px solid;
@@ -87,6 +161,8 @@ nav form {
   padding-left: 10px;
 }
 
+/* ==================== Login styling ==================== */
+
 #login {
   width: 50%;
   position: absolute;
@@ -94,6 +170,8 @@ nav form {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* ==================== New Post ==================== */
 
 #textpost {
   resize: none;
@@ -123,11 +201,15 @@ nav form {
   border: 3px solid;
 }
 
+/* ==================== Update Form ==================== */
+
 .update-form {
     border: 1px solid;
     position: absolute;
-    top: 28.3%;
-    height: 350px;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
     width: 450px;
 }
 

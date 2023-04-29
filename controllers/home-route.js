@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { Post, User } = require("../models");
+const Comment = require("../models/comment");
+const moment = require("moment");
 
 let globalUserId;
 
@@ -42,40 +44,58 @@ router.get("/signup", async (req, res) => {
   res.render("signup");
 });
 
-router.get('/post', async (req, res) => {
+router.get("/post", async (req, res) => {
   try {
     const postId = req.query.id;
     const post = await Post.findOne({ where: { id: postId } });
-    res.render('post-details', { post });
+    res.render("post-details", { post });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
-router.get('/post/:id', async (req, res) => {
+router.get("/post/:id", async (req, res) => {
   try {
+    const commentTime = await Comment.findAll({ raw: true });
     const post = await Post.findByPk(req.params.id, {
-      include: { model: User, attributes: ['username'] }
+      include: [
+        { model: User, attributes: ["username"] },
+        { model: Comment, include: { model: User, attributes: ["username"] } },
+      ],
     });
 
     if (!post) {
-      res.status(404).render('404');
+      res.status(404).render("404");
       return;
     }
 
-    // * This is where I am grabbing the susername from the post data
     const username = post.user.dataValues.username;
-
     const datePosted = post.created_at.toLocaleDateString();
+
     const postData = {
       user: username,
       time: datePosted,
       title: post.title,
       body: post.body,
+      comments: post.comments.map((comment) => {
+        const commentCreated = moment(comment.dataValues.comment_created).format('MM/DD/YYYY h:mm a');;
+        return {
+          id: comment.id,
+          text: comment.body,
+          user: comment.user.dataValues.username,
+          created: commentCreated,
+        };
+      }),
     };
 
-    res.render('partials/post-details', { postData, loggedIn: req.session.loggedIn, postId: req.params.id });
+    console.log("DDDDD",postData.comments);
+
+    res.render("partials/post-details", {
+      postData,
+      loggedIn: req.session.loggedIn,
+      postId: req.params.id,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -167,7 +187,7 @@ router.post("/newPost", async (req, res) => {
     // Get the user ID from the session
     const userId = req.session.userId;
 
-    req.session.userId = User.id
+    req.session.userId = User.id;
 
     console.log("User ID", userId);
     // Create a new post object with the user_id included
@@ -188,20 +208,20 @@ router.post("/newPost", async (req, res) => {
   }
 });
 
-router.post('/post/:id', async (req, res) => {
+router.post("/post/:id", async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await Post.findByPk(req.params.id);
     console.log(post);
 
     if (!post) {
-      res.status(404).render('404');
+      res.status(404).render("404");
       return;
     }
 
     if (post.user_id !== globalUserId) {
-      console.log('Access forbidden:', req.session.userId, post.user_id);
-      res.status(403).render('403');
+      console.log("Access forbidden:", req.session.userId, post.user_id);
+      res.status(403).render("403", { loggedIn: req.session.loggedIn });
       return;
     }
 
@@ -214,10 +234,27 @@ router.post('/post/:id', async (req, res) => {
     await post.save();
 
     // Redirect to the updated post
-    res.redirect(`/post/${postId}`)
+    res.redirect(`/post/${postId}`);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+router.post("/post/:id/comment", async (req, res) => {
+  console.log(Comment);
+  try {
+    const postId = req.params.id;
+    const commentData = {
+      post_id: postId,
+      user_id: req.session.userId, // assuming you are using session-based authentication
+      body: req.body.comment,
+    };
+    await Comment.create(commentData);
+    res.redirect(`/post/${postId}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to add comment." });
   }
 });
 
