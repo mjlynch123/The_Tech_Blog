@@ -2,7 +2,10 @@
 <link rel="stylesheet" href="/css/jass.css" />
 <html>
   <body>
+
+    {{! Main body }}
     <div class="main-area">
+
       {{! Main post card }}
       <div class="card">
         <h1>{{postData.title}}</h1>
@@ -13,11 +16,14 @@
         >{{postData.time}}</p>
         <p>{{postData.body}}</p>
       </div>
+
+      {{! Display comment in this area }}
       <div class="comment-zone">
         {{#if postData.comments.length}}
           {{#each postData.comments}}
             <div class="comment-item">
-              <p><strong>{{this.user}}</strong> <span class="created">{{this.created}}</span></p>
+              <p><strong>{{this.user}}</strong>
+                <span class="created">{{this.created}}</span></p>
               <p class="text">{{this.text}}</p>
             </div>
           {{/each}}
@@ -59,6 +65,10 @@
 
         <button type="submit" class="update">Update Post</button>
       </div>
+    </form>
+
+    <form action="/post/{{postId}}?_method=DELETE" method="POST" id="delete">
+      <button type="submit">Delete Post</button>
     </form>
 
   </body>

@@ -57,7 +57,6 @@ router.get("/post", async (req, res) => {
 
 router.get("/post/:id", async (req, res) => {
   try {
-    const commentTime = await Comment.findAll({ raw: true });
     const post = await Post.findByPk(req.params.id, {
       include: [
         { model: User, attributes: ["username"] },
@@ -66,7 +65,7 @@ router.get("/post/:id", async (req, res) => {
     });
 
     if (!post) {
-      res.status(404).render("404");
+      res.status(404).render("403");
       return;
     }
 
@@ -89,8 +88,7 @@ router.get("/post/:id", async (req, res) => {
       }),
     };
 
-    console.log("DDDDD",postData.comments);
-
+    // * Renders the post details page and sending the post data to it as well as loggedIn and postId
     res.render("partials/post-details", {
       postData,
       loggedIn: req.session.loggedIn,
@@ -194,7 +192,7 @@ router.post("/newPost", async (req, res) => {
     const newPost = {
       title: title,
       body: content,
-      user_id: userId,
+      user_id: globalUserId,
     };
 
     // Save the new post to the database
@@ -215,7 +213,7 @@ router.post("/post/:id", async (req, res) => {
     console.log(post);
 
     if (!post) {
-      res.status(404).render("404");
+      res.status(404).render("403" , {loggedIn: req.session.loggedIn });
       return;
     }
 
@@ -238,6 +236,36 @@ router.post("/post/:id", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+router.delete("/post/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = globalUserId;
+
+    // Find the post by ID and make sure it exists
+    const post = await Post.findByPk(postId);
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    // Check if the user is authorized to delete the post
+    if (post.user_id !== userId) {
+      return res.status(403).render("403", {loggedIn: req.session.loggedIn });
+    }
+
+    // Delete all comments associated with the post
+    await Comment.destroy({ where: { post_id: postId } });
+
+    // Delete the post
+    await post.destroy();
+
+    // Send a response indicating success
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
   }
 });
 
