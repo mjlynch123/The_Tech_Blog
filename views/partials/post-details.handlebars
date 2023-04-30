@@ -67,8 +67,11 @@
       </div>
     </form>
 
+    {{!-- Delete button for deleting a post that belongs to the user --}}
     <form action="/post/{{postId}}?_method=DELETE" method="POST" id="delete">
-      <button type="submit">Delete Post</button>
+      <button type="submit" id="delete-btn">
+        <i class="fas fa-trash-alt"></i>
+      </button>
     </form>
 
   </body>
