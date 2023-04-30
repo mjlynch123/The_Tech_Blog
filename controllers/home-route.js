@@ -7,6 +7,7 @@ let globalUserId;
 
 // ! All routes had to be added to this page due to same bug causing access denial
 
+
 // TODO: This is the home route
 router.get("/", async (req, res) => {
   console.log("home", req.session.loggedIn);
