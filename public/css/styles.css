@@ -85,7 +85,7 @@ nav form {
 /* ==================== Comment Styling ==================== */
 
 .comment-zone {
-  height: 200px;
+  height: 219px;
   position: relative;
   top: 185px;
   width: 100%;
@@ -260,4 +260,13 @@ textarea {
 
 #delete-btn:hover {
   cursor: pointer;
+}
+
+/* ==================== Start of No Posts page =================== */
+
+.noPost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

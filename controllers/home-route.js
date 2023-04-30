@@ -7,6 +7,7 @@ let globalUserId;
 
 // ! All routes had to be added to this page due to same bug causing access denial
 
+// TODO: This is the home route
 router.get("/", async (req, res) => {
   console.log("home", req.session.loggedIn);
 
@@ -36,13 +37,134 @@ router.get("/", async (req, res) => {
   res.render("home", { postList, loggedIn: req.session.loggedIn });
 });
 
+router.get("/dashboard", async (req, res) => {
+  try {
+    // Check if the user is logged in
+    if (!req.session.loggedIn ||globalUserId === undefined) {
+      return res.redirect("/login");
+    }
+
+    // Get all posts created by the current user
+    const userPosts = await Post.findAll({
+      where: {
+        user_id: globalUserId,
+      },
+    });
+
+    if (userPosts.length === 0) {
+      // If the user has not posted any posts, return an error message
+      return res.render("noPosts", { message: "You haven't posted any posts yet.", loggedIn: req.session.loggedIn });
+    }
+
+    // Map each post to an object containing the post data and the user who posted it
+    const postList = await Promise.all(
+      userPosts.map(async (post) => {
+        const user = await User.findOne({
+          where: {
+            id: post.user_id,
+          },
+        });
+        return {
+          user: user.username,
+          time: post.created_at.toLocaleDateString(),
+          title: post.title,
+          body: post.body,
+          postId: post.id,
+        };
+      })
+    );
+
+    // Render the myposts page and pass the post list and loggedIn status to the view
+    res.render("dashboard", { postList, loggedIn: req.session.loggedIn });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
+// TODO Login route
+
 router.get("/login", async (req, res) => {
   res.render("login");
+});
+
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+  // ! This is making sure that the login button is changed to logout if the user is logged in
+  res.render("login", { loggedIn: req.session.loggedIn });
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const UserData = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+    console.log("logging in");
+
+    if (!UserData) {
+      res
+        .status(400)
+        .json({ message: "Incorrect email or password. Please try again!" });
+      return;
+    }
+
+    const validPassword = await UserData.checkPassword(req.body.password);
+
+    if (!validPassword) {
+      res
+        .status(400)
+        .json({ message: "Incorrect email or password. Please try again!" });
+      return;
+    }
+
+    req.session.save(() => {
+      req.session.loggedIn = true;
+      req.session.userId = UserData.id;
+      globalUserId = UserData.id;
+      res.render("home", { loggedIn: req.session.loggedIn });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.redirect("/login");
+    });
+  } else {
+    res.status(404).end();
+  }
 });
 
 router.get("/signup", async (req, res) => {
   res.render("signup");
 });
+
+router.post("/signup", async (req, res) => {
+  try {
+    console.log(req.session.loggedIn);
+    const { email, username, password } = req.body;
+    const newUser = await User.create({ email, username, password });
+    req.session.loggedIn = true;
+    console.log(req.session.loggedIn);
+    res.render("login");
+    // res.status(200).json(newUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+
+// TODO get posts
 
 router.get("/post", async (req, res) => {
   try {
@@ -97,112 +219,6 @@ router.get("/post/:id", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
-  }
-});
-
-router.get("/newPost", async (req, res) => {
-  // ! This is making sure that the login button is changed to logout if the user is logged in
-  res.render("new_post", { loggedIn: req.session.loggedIn });
-});
-
-// Login route
-router.get("/login", (req, res) => {
-  if (req.session.loggedIn) {
-    res.redirect("/");
-    return;
-  }
-  // ! This is making sure that the login button is changed to logout if the user is logged in
-  res.render("login", { loggedIn: req.session.loggedIn });
-});
-
-router.post("/signup", async (req, res) => {
-  try {
-    console.log(req.session.loggedIn);
-    const { email, username, password } = req.body;
-    const newUser = await User.create({ email, username, password });
-    req.session.loggedIn = true;
-    console.log(req.session.loggedIn);
-    res.render("login");
-    // res.status(200).json(newUser);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// Login
-router.post("/login", async (req, res) => {
-  try {
-    const UserData = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-    console.log("logging in");
-
-    if (!UserData) {
-      res
-        .status(400)
-        .json({ message: "Incorrect email or password. Please try again!" });
-      return;
-    }
-
-    const validPassword = await UserData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: "Incorrect email or password. Please try again!" });
-      return;
-    }
-
-    req.session.save(() => {
-      req.session.loggedIn = true;
-      req.session.userId = UserData.id;
-      globalUserId = UserData.id;
-      res.render("home", { loggedIn: req.session.loggedIn });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-router.post("/logout", (req, res) => {
-  if (req.session.loggedIn) {
-    req.session.destroy(() => {
-      res.redirect("/login");
-    });
-  } else {
-    res.status(404).end();
-  }
-});
-
-router.post("/newPost", async (req, res) => {
-  try {
-    const { title, content } = req.body;
-
-    // Get the user ID from the session
-    const userId = req.session.userId;
-
-    req.session.userId = User.id;
-
-    console.log("User ID", userId);
-    // Create a new post object with the user_id included
-    const newPost = {
-      title: title,
-      body: content,
-      user_id: globalUserId,
-    };
-
-    // Save the new post to the database
-    await Post.create(newPost);
-
-    // Redirect the user to the homepage
-    res.redirect("/");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
   }
 });
 
@@ -283,6 +299,43 @@ router.post("/post/:id/comment", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to add comment." });
+  }
+});
+
+
+// TODO This is getting and posting new posts
+
+router.get("/newPost", async (req, res) => {
+  // ! This is making sure that the login button is changed to logout if the user is logged in
+  res.render("new_post", { loggedIn: req.session.loggedIn });
+});
+
+router.post("/newPost", async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    // Get the user ID from the session
+    const userId = req.session.userId;
+
+    req.session.userId = User.id;
+
+    console.log("User ID", userId);
+    // Create a new post object with the user_id included
+    const newPost = {
+      title: title,
+      body: content,
+      user_id: globalUserId,
+    };
+
+    console.log("User",newPost.user_id)
+
+    // Save the new post to the database
+    await Post.create(newPost);
+
+    // Redirect the user to the homepage
+    res.redirect("/");
+  } catch (err) {
+    res.redirect("/login");
   }
 });
 

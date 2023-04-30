@@ -1,0 +1,21 @@
+
+<html>
+  <body>
+    <div class="cards">
+      {{#each postList}}
+        <a href="/post/{{this.postId}}">
+          <div class="blog_card">
+            <h2>{{this.title}}</h2>
+            <p><strong>{{this.user}}</strong>
+              <span class="created">{{this.time}}</span></p>
+            <p>{{this.body}}</p>
+          </div>
+        </a>
+      {{/each}}
+    </div>
+
+    <form method="get" action="/newPost" id="newPost">
+      <button id="newPostBtn">+</button>
+    </form>
+  </body>
+</html>
