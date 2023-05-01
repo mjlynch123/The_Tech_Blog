@@ -20,12 +20,3 @@ const sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
 });
 
 module.exports = sequelize;
-
-const connection = mysql.createConnection({
-  host: 'us-cdbr-east-02.cleardb.com',
-  user: '<YOUR_USERNAME>',
-  password: '<YOUR_PASSWORD>',
-  database: '<YOUR_DATABASE_NAME>',
-});
-
-module.exports = sequelize;
