@@ -2,10 +2,10 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 class Post extends Model {}
 
-const sequelize = new Sequelize('blog_db', 'root', 'Password1', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
+// const sequelize = new Sequelize('blog_db', 'root', 'Password1', {
+//   host: 'localhost',
+//   dialect: 'mysql',
+// });
 
 Post.init(
   {
