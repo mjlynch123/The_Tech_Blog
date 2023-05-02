@@ -2,12 +2,12 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 class Post extends Model {}
 
-let sequelize;
+let sequelizer;
 
 if (process.env.JAWSDB_URL) {
-  sequelize = new Sequelize(process.env.JAWSDB_URL);
+  sequelizer = new Sequelize(process.env.JAWSDB_URL);
 } else {
-  sequelize = new Sequelize(
+  sequelizer = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PW,
@@ -50,7 +50,7 @@ Post.init(
     },
   },
   {
-    sequelize,
+    sequelizer,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
