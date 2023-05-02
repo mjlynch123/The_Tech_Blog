@@ -34,5 +34,9 @@
   "homepage": "https://github.com/mjlynch123/The_Tech_Blog#readme",
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "production": {
+    "use_env_variable": "JAWSDB_URL",
+    "dialect": "mysql"
   }
 }
