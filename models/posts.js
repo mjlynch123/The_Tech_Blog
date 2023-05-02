@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes, Sequelize } = require('sequelize');
+const sequelize = new Sequelize(process.env.JAWSDB_URL);
 
 class Post extends Model {}
 
