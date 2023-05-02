@@ -1,5 +1,7 @@
 # The Tech Blog
 
+![Image](./Images/screenshot.png);
+
 The Tech Blog is a CMS-style blog site that allows users to create an account, create blog posts, and leave comments on existing posts.
 User Experience
 
