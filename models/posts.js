@@ -1,4 +1,5 @@
-const { Model, DataTypes, Sequelize } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
 class Post extends Model {}
 
@@ -40,6 +41,8 @@ Post.init(
     modelName: 'post',
   }
 );
+
+module.exports = Post;
 
 // ! had to put seed data inside of models, otherwise I was getting an error saying that the tables couldn't be created
 // ! This will seed on start
